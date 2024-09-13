@@ -25,7 +25,7 @@ jobs:
           chmod +x generate-html.sh
 
           # Run the script and redirect output to index.html
-          ./generate.html.sh > index.html
+          ./generate-html.sh > index.html
 
       # Step 4: Commit and push changes to the repository
       - name: Commit and push updated index.html
