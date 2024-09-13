@@ -72,6 +72,13 @@ while IFS="$(printf '\n')" read -r line; do
     id=$((id + 1))  # Correct increment
 done < "${CHECKS_FILE}"
 wait
+
+# Check if any .ko files were created
+if ! ls "${TMP_DIR}"/*.ko 1> /dev/null 2>&1; then
+    echo "No outage files created. Exiting."
+    exit 0
+fi
+
 OUTAGES_COUNT="$(ls "${TMP_DIR}/"*.ko | wc -l)"
 
 # Generate HTML
@@ -94,27 +101,33 @@ li { list-style: none; margin-bottom: 2px; padding: 5px; border-bottom: 1px soli
 <div class='container'>
 <h1>${HEADER}</h1>
 EOF
+
 if [ "${OUTAGES_COUNT}" -ne 0 ]; then
     echo "<ul><li class='panel failed-bg'>${OUTAGES_COUNT} Outage(s)</li></ul>"
 else
     echo "<ul><li class='panel success-bg'>All Systems Operational</li></ul>"
 fi
+
 cat << EOF
 <h1>Services</h1>
 <ul>
 EOF
+
 for file in "${TMP_DIR}/"*.ko; do
     [ -e "${file}" ] || continue
     echo "<li>$(cat "${file}") <span class='small failed'>($(cat "${file}.info"))</span><span class='status failed'>Disrupted</span></li>"
 done
+
 for file in "${TMP_DIR}/"*.ok; do
     [ -e "${file}" ] || continue
     echo "<li>$(cat "${file}") <span class='status success'>Operational</span></li>"
 done
+
 cat << EOF
 </ul>
 <p class=small> Last check: $(date +%FT%T%z)</p>
 EOF
+
 if [ -f "${INCIDENTS_FILE}" ]; then
     echo '<h1>Incidents</h1>'
     if [ -s "${INCIDENTS_FILE}" ]; then
@@ -123,6 +136,7 @@ if [ -f "${INCIDENTS_FILE}" ]; then
         echo '<p>No incident reported yet ;)</p>'
     fi
 fi
+
 cat <<EOF
 </div>
 </body></html>
@@ -130,6 +144,7 @@ EOF
 
 # Cleanup and exit
 rm -r "${TMP_DIR}" 2>/dev/null
+
 if [ "${OUTAGE_RC}" = true ]; then
     exit "${OUTAGES_COUNT}"
 fi
