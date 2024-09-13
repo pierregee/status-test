@@ -73,12 +73,6 @@ while IFS="$(printf '\n')" read -r line; do
 done < "${CHECKS_FILE}"
 wait
 
-# Check if any .ko files were created
-if ! ls "${TMP_DIR}"/*.ko 1> /dev/null 2>&1; then
-    echo "No outage files created. Exiting."
-    exit 0
-fi
-
 OUTAGES_COUNT="$(ls "${TMP_DIR}/"*.ko | wc -l)"
 
 # Generate HTML
