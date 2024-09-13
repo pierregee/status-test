@@ -3,7 +3,7 @@ name: Update Index HTML
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/1 * * * *" # Runs every 5 minutes
+    - cron: "*/5 * * * *" # Runs every 5 minutes
 
 jobs:
   update-index:
