@@ -1,12 +1,15 @@
-name: Update Index HTML
+name: Update and Deploy
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *" # Runs every 5 minutes
+  push:
+    branches:
+      - main # Trigger deployment on push to the main branch
 
 jobs:
-  update-index:
+  update-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,5 +38,14 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add index.html
-          git commit -m "Update index.html with latest script output"
+          git commit -m "Update index.html with latest script output" || echo "No changes to commit"
           git push
+
+      # Step 5: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: main # Branch to deploy from (main)
+          folder: . # Folder to deploy (root directory)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
