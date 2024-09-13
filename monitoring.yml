@@ -1,0 +1,36 @@
+name: Update Index HTML
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # Runs every 5 minutes
+
+jobs:
+  update-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Step 2: Set up the environment (install necessary tools if needed)
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y curl netcat iputils-ping
+
+      # Step 3: Run the shell script and update index.html
+      - name: Run script and update index.html
+        run: |
+          # Ensure the script is executable
+          chmod +x generate-html.sh
+
+          # Run the script and redirect output to index.html
+          ./generate.html.sh > index.html
+
+      # Step 4: Commit and push changes to the repository
+      - name: Commit and push updated index.html
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add index.html
+          git commit -m "Update index.html with latest script output"
+          git push
