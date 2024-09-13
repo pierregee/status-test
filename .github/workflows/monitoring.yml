@@ -1,6 +1,7 @@
 name: Update Index HTML
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "*/1 * * * *" # Runs every 5 minutes
 
