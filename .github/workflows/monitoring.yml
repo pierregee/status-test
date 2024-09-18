@@ -41,7 +41,7 @@ jobs:
           git commit -m "Update index.html with latest script output" || echo "No changes to commit"
           git push --force
 
-      # # Step 5: Deploy to GitHub Pages
+      # # Step 5: Deploy to GitHub Page s
       # - name: Deploy to GitHub Pages
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
