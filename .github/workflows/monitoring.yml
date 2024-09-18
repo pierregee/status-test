@@ -21,17 +21,17 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y curl netcat iputils-ping
 
-      # Step 3: Save current index.html to history
-      - name: Save current index.html to history
+      # Step 3: Save current index.html to archive
+      - name: Save current index.html to archive
         run: |
           # Ensure the script is executable
-          chmod +x save-to-history.sh
+          chmod +x archive.sh
 
-          # Save the current index.html to history
+          # Save the current index.html to archive
           if [ -f index.html ]; then
-            ./save-to-history.sh
+            ./archive.sh
           else
-            echo "index.html does not exist. Skipping history save."
+            echo "index.html does not exist. Skipping archive.sh"
           fi
 
       # Step 4: Run the script to update index.html
@@ -51,8 +51,8 @@ jobs:
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
           git add index.html
-          git add history/ # Add the history directory
-          git commit -m "Update index.html and history with latest script output" || echo "No changes to commit"
+          git add archive/ # Add the archive directory
+          git commit -m "Update index.html and archive with latest script output" || echo "No changes to commit"
           git push --force
 
       # Step 6: Deploy to GitHub Pages

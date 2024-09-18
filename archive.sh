@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 
-# Create the history directory if it doesn't exist
-HISTORY_DIR="./history"
-mkdir -p "${HISTORY_DIR}"
+# Create the archive directory if it doesn't exist
+ARCHIVE_DIR="./archive"
+mkdir -p "${ARCHIVE_DIR}"
 
-# Generate the timestamp for the history file
+# Generate the timestamp for the archive file
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-HISTORY_FILE="${HISTORY_DIR}/index_${TIMESTAMP}.html"
+ARCHIVE_FILE="${ARCHIVE_DIR}/index_${TIMESTAMP}.html"
 
-# Copy the index.html to the history folder with a timestamped filename
-cp index.html "${HISTORY_FILE}"
+# Copy the index.html to the archive folder with a timestamped filename
+cp index.html "${ARCHIVE_FILE}"
 
 # Print confirmation
-echo "Saved index.html to ${HISTORY_FILE}"
+echo "Saved index.html to ${ARCHIVE_FILE}"
